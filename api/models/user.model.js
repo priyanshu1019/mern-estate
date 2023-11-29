@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema(
       type: "string",
       required: true,
     },
+    avatar: {
+      type: "string",
+      default:
+        "https://img.freepik.com/premium-vector/business-global-economy_24877-41082.jpg",
+    },
   },
   { timestamps: true }
 );
