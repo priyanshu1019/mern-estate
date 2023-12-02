@@ -18,12 +18,12 @@ import {
 import { Contact } from "./Contact";
 export const Listing = () => {
   SwiperCore.use([Navigation]);
-  const params = useParams();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [contact, setContact] = useState(false);
+  const params = useParams();
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -47,27 +47,25 @@ export const Listing = () => {
     };
     fetchListing();
   }, [params.listingId]);
+
   return (
     <main>
-      {loading && (
-        <p className=" font-semibold text-2xl text-center my-7">Loading...</p>
-      )}
+      {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
       {error && (
-        <p className=" font-semibold text-2xl text-center my-7">
-          Something went wrong!
-        </p>
+        <p className="text-center my-7 text-2xl">Something went wrong!</p>
       )}
       {listing && !loading && !error && (
-        <>
+        <div>
           <Swiper navigation>
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
-                  className="h-[300px] sm:h-[500px] object-cover"
-                  style={{ background: `url(${url}) center no-repeat ` }}
-                >
-                  {" "}
-                </div>
+                  className="h-[550px]"
+                  style={{
+                    background: `url(${url}) center no-repeat`,
+                    backgroundSize: "cover",
+                  }}
+                ></div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -111,46 +109,42 @@ export const Listing = () => {
               )}
             </div>
             <p className="text-slate-800">
-              {" "}
-              <span className="font-semibold text-black">
-                Description
-              </span> - {listing.description}{" "}
+              <span className="font-semibold text-black">Description - </span>
+              {listing.description}
             </p>
-            <ul className=" flex flex-wrap gap-4 sm:gap-6 items-center text-green-900 font-semibold text-sm">
-              <li className="flex gap-1 items-center whitespace-nowrap">
+            <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6">
+              <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBed className="text-lg" />
                 {listing.bedrooms > 1
-                  ? `${listing.bedrooms} beds`
-                  : `${listing.bedrooms} bed`}
+                  ? `${listing.bedrooms} beds `
+                  : `${listing.bedrooms} bed `}
               </li>
-              <li className="flex gap-1 items-center whitespace-nowrap">
+              <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaBath className="text-lg" />
                 {listing.bathrooms > 1
-                  ? `${listing.bathrooms} baths`
-                  : `${listing.bathrooms} bath`}
+                  ? `${listing.bathrooms} baths `
+                  : `${listing.bathrooms} bath `}
               </li>
-              <li className="flex gap-1 items-center whitespace-nowrap">
+              <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaParking className="text-lg" />
-                {listing.parking ? "Parking Spot" : "No Parking"}
+                {listing.parking ? "Parking spot" : "No Parking"}
               </li>
-              <li className="flex gap-1 items-center whitespace-nowrap">
+              <li className="flex items-center gap-1 whitespace-nowrap ">
                 <FaChair className="text-lg" />
-                {listing.furnished > 1 ? `Furnished` : `Unfurnished`}
+                {listing.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
             {currentUser && listing.userRef !== currentUser._id && !contact && (
               <button
-                onClick={() => {
-                  setContact(true);
-                }}
-                className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95"
+                onClick={() => setContact(true)}
+                className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
               >
-                Contact LandLord
+                Contact landlord
               </button>
             )}
             {contact && <Contact listing={listing} />}
           </div>
-        </>
+        </div>
       )}
     </main>
   );
